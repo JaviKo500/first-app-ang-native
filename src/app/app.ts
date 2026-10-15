@@ -1,5 +1,6 @@
 import { Component, computed, signal } from '@angular/core';
 import { Pressable, ScrollView, Text, View } from '@ng-native/components';
+import { HabitRow } from './habit-row';
 
 /**
  * Element names are lowercase, and that is load-bearing rather than style: an uppercase name is
@@ -12,7 +13,7 @@ interface Habit {
 }
 
 @Component({
-  imports: [Text, View, ScrollView, Pressable],
+  imports: [Text, View, ScrollView, HabitRow],
   selector: 'app-root',
   template: `
     <view class="screen">
@@ -20,10 +21,7 @@ interface Habit {
       <text class="summary">{{ remaining() }} left to do</text>
       <scroll-view [contentContainerStyle]="{gap:8}">
         @for (habit of habits(); track habit.id) {
-          <pressable class="habit" accessibilityRole="button" (press)="toggle(habit.id)">
-            <text>{{ habit.name }}</text>
-            <text class="status">{{ habit.done ? 'Done' : 'To do' }}</text>
-          </pressable>
+          <habit-row [name]="habit.name" [done]="habit.done" (toggle)="toggle(habit.id)"/>
         } @empty {
           <text class="summary">No habits yet</text>
         }
@@ -45,20 +43,7 @@ interface Habit {
   .summary {
     color: #71717a;
   }
-  .habit {
-    flex-direction: row;
-    justify-content: space-between;
-    margin-top: 8px;
-    padding: 12px;
-    border-radius: 12px;
-    background-color: #fff;
-  }
-  .habit:active {
-    background-color: #e4e4e7;
-  }
-  .status {
-    color: #71717a;
-  }
+  
   `,
 })
 
