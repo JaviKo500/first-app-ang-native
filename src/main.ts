@@ -8,12 +8,15 @@ import { currentConditions, deviceTokens, watchConditions } from '@ng-native/dev
 import { getFabricUIManager, registerPlatformComponents } from '@ng-native/fabric';
 import { App } from './app/app.ts';
 
+import tailwind from '../.angular-native/app.tailwind.js';
+
 registerPlatformComponents(Platform.OS);
 
 AppRegistry.registerRunnable('main', ({ rootTag }: { rootTag: number | string }) => {
   const app = mount(Number(rootTag), App, getFabricUIManager(), {
     // Colours, as the integers the platform wants.
     processColor,
+    globalStyles: tailwind,
     // What `@media` resolves against. Without it every media query is false and a responsive
     // layout renders as its smallest case.
     conditions: currentConditions(),
