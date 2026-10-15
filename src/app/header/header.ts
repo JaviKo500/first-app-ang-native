@@ -1,4 +1,4 @@
-import { Component, inject } from "@angular/core";
+import { Component, inject, input } from "@angular/core";
 import { Pressable, Text, View } from "@ng-native/components";
 import { ThemeService } from "./theme.service";
 
@@ -12,9 +12,12 @@ import { ThemeService } from "./theme.service";
           <text class="text-zinc-600 dark:text-zinc-300">Theme: {{theme.className()}}</text>
         </pressable>
       </view>
-   `,
+      <text class="text-zinc-500 dark:text-zinc-300 ios:text-xs ios:font-semibold ios:uppercase">{{ remaining() }} left to do</text>
+   `
 })
 
 export class Header {
    protected readonly theme = inject(ThemeService);
+
+   readonly remaining = input.required<number>();
 }
