@@ -1,10 +1,11 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { SafeAreaProvider, ScrollView, View } from '@ng-native/components';
-import { HabitRow } from './habit-row';
+import { HabitRow } from './habits/habit-row';
 import { ThemeService } from './header/theme.service';
 import { Header } from './header/header';
 import { NewHabit } from './habits/new-habit';
 import { EmptyState } from './shared/empty-state';
+import { Footer } from './shared/footer';
 
 /**
  * Element names are lowercase, and that is load-bearing rather than style: an uppercase name is
@@ -17,7 +18,7 @@ interface Habit {
 }
 
 @Component({
-  imports: [HabitRow, Header, NewHabit, EmptyState, View, ScrollView, SafeAreaProvider],
+  imports: [HabitRow, Header, NewHabit, EmptyState, Footer, View, ScrollView, SafeAreaProvider],
   selector: 'app-root',
   template: `
     <safe-area-provider>
@@ -34,6 +35,7 @@ interface Habit {
             />
           }
         </scroll-view>
+        <custom-footer/>
       </view>
     </safe-area-provider> 
   `,
