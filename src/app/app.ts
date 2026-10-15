@@ -13,37 +13,20 @@ interface Habit {
 }
 
 @Component({
-  imports: [Text, View, ScrollView, HabitRow],
+  imports: [HabitRow, Text, View, ScrollView,],
   selector: 'app-root',
   template: `
-    <view class="screen">
-      <text class="title">Today</text>
-      <text class="summary">{{ remaining() }} left to do</text>
+    <view class="flex-1 gap-2 bg-zinc-100 px-5 pt-safe mt-8">
+      <text class="pt-4 text-3xl font-bold text-zinc-900">Today</text>
+      <text class="text-zinc-500">{{ remaining() }} left to do</text>
       <scroll-view [contentContainerStyle]="{gap:8}">
         @for (habit of habits(); track habit.id) {
           <habit-row [name]="habit.name" [done]="habit.done" (toggle)="toggle(habit.id)"/>
         } @empty {
-          <text class="summary">No habits yet</text>
+          <text class="text-zinc-500">No habits yet</text>
         }
       </scroll-view>
     </view>
-  `,
-  styles: `
-  .screen {
-    flex: 1;
-    gap: 8px;
-    padding: 64px 20px;
-    padding-top: calc(var(--safe-area-inset-top, 0px) + 64px);
-    background-color: #f4f4f5;
-  }
-  .title {
-    font-size: 30px;
-    font-weight: 700;
-  }
-  .summary {
-    color: #71717a;
-  }
-  
   `,
 })
 

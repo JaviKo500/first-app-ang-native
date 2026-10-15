@@ -5,26 +5,10 @@ import { Pressable, Text } from "@ng-native/components";
    selector: 'habit-row',
    imports: [Text, Pressable],
    template: `
-      <pressable class="habit" accessibilityRole="button" (press)="toggle.emit()">
+      <pressable class="flex flex-row justify-between mt-2 p-3 rounded-xl bg-white active:bg-zinc-200" accessibilityRole="button" (press)="toggle.emit()">
          <text>{{ name() }}</text>
-         <text class="status">{{ done() ? 'Done' : 'To do' }}</text>
+         <text class="text-zinc-400">{{ done() ? 'Done' : 'To do' }}</text>
       </pressable>
-   `,
-   styles: `
-   .habit {
-      flex-direction: row;
-      justify-content: space-between;
-      margin-top: 8px;
-      padding: 12px;
-      border-radius: 12px;
-      background-color: #fff;
-   }
-   .habit:active {
-      background-color: #e4e4e7;
-   }
-   .status {
-      color: #71717a;
-   }
    `,
 })
 
