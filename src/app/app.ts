@@ -1,5 +1,5 @@
-import { Component, signal } from '@angular/core';
-import { Text, View } from '@ng-native/components';
+import { Component, computed, signal } from '@angular/core';
+import { Pressable, ScrollView, Text, View } from '@ng-native/components';
 
 /**
  * Element names are lowercase, and that is load-bearing rather than style: an uppercase name is
@@ -12,18 +12,22 @@ interface Habit {
 }
 
 @Component({
-  imports: [Text, View],
+  imports: [Text, View, ScrollView, Pressable],
   selector: 'app-root',
   template: `
     <view class="screen">
       <text class="title">Today</text>
-      <text class="summary">3 left to do</text>
-      @for (habit of habits(); track habit.id) {
-        <view class="habit">
-          <text>{{ habit.name }}</text>
-          <text class="status">{{ habit.done ? 'Done' : 'To do' }}</text>
-        </view>
-      }
+      <text class="summary">{{ remaining() }} left to do</text>
+      <scroll-view [contentContainerStyle]="{gap:8}">
+        @for (habit of habits(); track habit.id) {
+          <pressable class="habit" accessibilityRole="button" (press)="toggle(habit.id)">
+            <text>{{ habit.name }}</text>
+            <text class="status">{{ habit.done ? 'Done' : 'To do' }}</text>
+          </pressable>
+        } @empty {
+          <text class="summary">No habits yet</text>
+        }
+      </scroll-view>
     </view>
   `,
   styles: `
@@ -49,6 +53,9 @@ interface Habit {
     border-radius: 12px;
     background-color: #fff;
   }
+  .habit:active {
+    background-color: #e4e4e7;
+  }
   .status {
     color: #71717a;
   }
@@ -59,7 +66,18 @@ interface Habit {
 export class App {
   protected readonly habits = signal<Habit[]>([
     { id: 'water', name: 'Drink water', done: false },
-    { id: 'read', name: 'Read ten pages', done: false },
+    { id: 'eat', name: 'Eat breakfast', done: false },
+    { id: 'running', name: 'Run for 30 minutes', done: false },
+    { id: 'sleep', name: 'Get 8 hours of sleep', done: false },
+    { id: 'work', name: 'Work', done: false },
     { id: 'walk', name: 'Walk', done: true },
   ]);
+
+  protected readonly remaining = computed( () => this.habits().filter(habit => !habit.done).length);
+
+  protected toggle(id: string) {
+    this.habits.update( (habits) => 
+      habits.map( habit => habit.id === id ? { ...habit, done: !habit.done }: habit )
+    );
+  }
 }
