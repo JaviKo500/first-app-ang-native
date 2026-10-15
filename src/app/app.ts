@@ -22,7 +22,7 @@ interface Habit {
     <view class="flex-1 gap-2 bg-zinc-100 px-5 pt-safe mt-8 dark:bg-black">
       <app-header/>
       <text class="text-zinc-500 dark:text-zinc-400 ios:text-xs ios:font-semibold ios:uppercase">{{ remaining() }} left to do</text>
-      <new-habit/>
+      <new-habit (add)="add($event)" />
       <scroll-view [contentContainerStyle]="{gap:8}">
         @for (habit of habits(); track habit.id) {
           <habit-row [name]="habit.name" [done]="habit.done" (toggle)="toggle(habit.id)"/>
@@ -39,14 +39,7 @@ interface Habit {
 
 
 export class App {
-  protected readonly habits = signal<Habit[]>([
-    { id: 'water', name: 'Drink water', done: false },
-    { id: 'eat', name: 'Eat breakfast', done: false },
-    { id: 'running', name: 'Run for 30 minutes', done: false },
-    { id: 'sleep', name: 'Get 8 hours of sleep', done: false },
-    { id: 'work', name: 'Work', done: false },
-    { id: 'walk', name: 'Walk', done: true },
-  ]);
+  protected readonly habits = signal<Habit[]>([]);
 
   protected readonly remaining = computed( () => this.habits().filter(habit => !habit.done).length);
 
@@ -57,4 +50,12 @@ export class App {
   }
   
   protected readonly theme = inject(ThemeService);
+
+  private nextHabitId = 0;
+
+  protected add( name: string ) {
+    const id = `habit${++this.nextHabitId}`;
+    this.habits.update( (habits) => [ ...habits, { id, name, done: false } ]);
+  }
+
 }
