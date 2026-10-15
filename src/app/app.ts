@@ -3,6 +3,7 @@ import { ScrollView, Text, View } from '@ng-native/components';
 import { HabitRow } from './habit-row';
 import { ThemeService } from './header/theme.service';
 import { Header } from './header/header';
+import { NewHabit } from './habits/new-habit';
 
 /**
  * Element names are lowercase, and that is load-bearing rather than style: an uppercase name is
@@ -15,12 +16,13 @@ interface Habit {
 }
 
 @Component({
-  imports: [HabitRow, Header, Text, View, ScrollView],
+  imports: [HabitRow, Header, NewHabit, Text, View, ScrollView],
   selector: 'app-root',
   template: `
     <view class="flex-1 gap-2 bg-zinc-100 px-5 pt-safe mt-8 dark:bg-black">
       <app-header/>
       <text class="text-zinc-500 dark:text-zinc-400 ios:text-xs ios:font-semibold ios:uppercase">{{ remaining() }} left to do</text>
+      <new-habit/>
       <scroll-view [contentContainerStyle]="{gap:8}">
         @for (habit of habits(); track habit.id) {
           <habit-row [name]="habit.name" [done]="habit.done" (toggle)="toggle(habit.id)"/>

@@ -6,6 +6,7 @@
   "dependencies": {
     "@angular/common": "^22.0.0",
     "@angular/core": "^22.0.0",
+    "@angular/forms": "^22.2.3",
     "@ng-native/components": "0.13.0",
     "@ng-native/device": "0.13.0",
     "@ng-native/fabric": "0.13.0",
