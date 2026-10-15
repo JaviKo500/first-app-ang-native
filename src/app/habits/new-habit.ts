@@ -24,7 +24,7 @@ import { form, FormField, maxLength, required, submit} from '@angular/forms/sign
             <text class="font-semibold text-white">Add</text>
          </pressable>
       </view>
-      @if ( habit.name().touched() && habit.name().invalid() ) {
+      @if ( habit.name().touched() && (habit.name().dirty() || attempted()) ) {
          <text class="text-sm text-red-500 mt-0.5" accessibilityRole="alert">
             {{habit.name().errors().at(-1)?.message}}
          </text>
@@ -41,10 +41,14 @@ export class NewHabit {
 
    readonly add = output<string>();
 
+   protected readonly attempted = signal(false);
+
    protected save(): void {
+      this.attempted.set(true);
       void submit( this.habit, async () => {
          this.add.emit( this.model().name );
          this.habit().reset({ name: '' });
+         this.attempted.set(false);
          return undefined;
       })
    }
