@@ -5,9 +5,11 @@ import { Pressable, Text } from "@ng-native/components";
    selector: 'habit-row',
    imports: [Text, Pressable],
    template: `
-      <pressable class="flex flex-row justify-between mt-2 p-3 rounded-xl bg-white active:bg-zinc-200" accessibilityRole="button" (press)="toggle.emit()">
-         <text>{{ name() }}</text>
-         <text class="text-zinc-400">{{ done() ? 'Done' : 'To do' }}</text>
+      <pressable class="flex-row  items-center justify-between mt-2 p-4 rounded-xl bg-white dark:bg-gray-800 active:bg-zinc-200 dark:active:bg-zinc-800" accessibilityRole="button" (press)="toggle.emit()">
+         <text class="text-base text-zinc-900 dark:text-white">{{ name() }}</text>
+         <text [class]="done() ? 'text-emerald-600':'text-zinc-400'">
+            {{ done() ? 'Done' : 'To do' }}
+         </text>
       </pressable>
    `,
 })
