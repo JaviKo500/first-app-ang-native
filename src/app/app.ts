@@ -1,82 +1,65 @@
-import { Component, inject, signal } from '@angular/core';
-import { Pressable, SafeAreaProvider, SafeAreaView, Text, View } from '@ng-native/components';
-import { StatusBar } from '@ng-native/device';
+import { Component, signal } from '@angular/core';
+import { Text, View } from '@ng-native/components';
 
 /**
  * Element names are lowercase, and that is load-bearing rather than style: an uppercase name is
  * read as an unknown Angular component and commits as a plain view with nothing in it.
  */
+interface Habit {
+  readonly id: string;
+  readonly name: string;
+  readonly done: boolean;
+}
+
 @Component({
-  imports: [Pressable, SafeAreaProvider, SafeAreaView, Text, View],
+  imports: [Text, View],
   selector: 'app-root',
   template: `
-    <safe-area-provider>
-      <safe-area-view class="screen">
-        <view class="body">
-          <text class="title">Angular, natively</text>
-          <text class="hint">Real native views. React is never in the render path.</text>
-
-          <pressable accessibilityRole="button" class="button" (press)="count.set(count() + 1)">
-            <text class="label">Tapped {{ count() }} times</text>
-          </pressable>
+    <view class="screen">
+      <text class="title">Today</text>
+      <text class="summary">3 left to do</text>
+      @for (habit of habits(); track habit.id) {
+        <view class="habit">
+          <text>{{ habit.name }}</text>
+          <text class="status">{{ habit.done ? 'Done' : 'To do' }}</text>
         </view>
-      </safe-area-view>
-    </safe-area-provider>
+      }
+    </view>
   `,
   styles: `
-    :host {
-      flex: 1;
-    }
-    .screen {
-      flex: 1;
-      background-color: #f5f5f7;
-    }
-    .body {
-      flex: 1;
-      justify-content: center;
-      gap: 12px;
-      padding: 24px;
-    }
-    .title {
-      color: #101014;
-      font-size: 28px;
-      font-weight: 700;
-    }
-    .hint {
-      color: #5f5f6b;
-      font-size: 15px;
-    }
-    .button {
-      align-items: center;
-      margin-top: 8px;
-      padding: 14px;
-      border-radius: 10px;
-      background-color: #3b6ef5;
-    }
-    .label {
-      color: #ffffff;
-      font-size: 16px;
-      font-weight: 600;
-    }
-    @media (prefers-color-scheme: dark) {
-      .screen {
-        background-color: #101014;
-      }
-      .title {
-        color: #ffffff;
-      }
-      .hint {
-        color: #8b8b96;
-      }
-    }
+  .screen {
+    flex: 1;
+    gap: 8px;
+    padding: 64px 20px;
+    padding-top: calc(var(--safe-area-inset-top, 0px) + 64px);
+    background-color: #f4f4f5;
+  }
+  .title {
+    font-size: 30px;
+    font-weight: 700;
+  }
+  .summary {
+    color: #71717a;
+  }
+  .habit {
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 8px;
+    padding: 12px;
+    border-radius: 12px;
+    background-color: #fff;
+  }
+  .status {
+    color: #71717a;
+  }
   `,
 })
-export class App {
-  protected readonly count = signal(0);
 
-  constructor() {
-    // Dark status bar icons in light mode and light ones in dark mode. Unclaimed, Android keeps
-    // light icons whatever the scheme.
-    inject(StatusBar).set({ style: 'auto' });
-  }
+
+export class App {
+  protected readonly habits = signal<Habit[]>([
+    { id: 'water', name: 'Drink water', done: false },
+    { id: 'read', name: 'Read ten pages', done: false },
+    { id: 'walk', name: 'Walk', done: true },
+  ]);
 }
