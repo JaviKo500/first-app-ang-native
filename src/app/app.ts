@@ -27,7 +27,10 @@ interface Habit {
         @for (habit of habits(); track habit.id) {
           <habit-row [name]="habit.name" [done]="habit.done" (toggle)="toggle(habit.id)"/>
         } @empty {
-          <text class="text-zinc-500 dark:text-zinc-400">No habits yet</text>
+          <view class="justify-center items-center">
+            <text class="text-2xl text-zinc-500 dark:text-zinc-200">No habits!</text>
+            <text class="text text-zinc-500 dark:text-zinc-400 mt-2">You don't have habits added</text>
+          </view>
         }
       </scroll-view>
     </view>
