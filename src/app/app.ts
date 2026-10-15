@@ -21,7 +21,7 @@ interface Habit {
   template: `
     <view class="flex-1 gap-2 bg-zinc-100 px-5 pt-safe mt-8 dark:bg-black">
       <app-header/>
-      <text class="text-zinc-500 dark:text-zinc-400 ios:text-xs ios:font-semibold ios:uppercase">{{ remaining() }} left to do</text>
+      <text class="text-zinc-500 dark:text-zinc-300 ios:text-xs ios:font-semibold ios:uppercase">{{ remaining() }} left to do</text>
       <new-habit (add)="add($event)" />
       <scroll-view [contentContainerStyle]="{gap:8}">
         @for (habit of habits(); track habit.id) {
