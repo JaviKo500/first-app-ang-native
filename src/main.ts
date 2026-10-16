@@ -6,9 +6,10 @@ import { AppRegistry, Image, Platform, processColor } from 'react-native';
 import { mount } from '@ng-native/platform';
 import { currentConditions, deviceTokens, watchConditions } from '@ng-native/device';
 import { getFabricUIManager, registerPlatformComponents } from '@ng-native/fabric';
-import { App } from './app/app.ts';
-
 import tailwind from '../.angular-native/app.tailwind.js';
+
+import { App } from './app/app.ts';
+import { appConfig } from './app/app.config.ts';
 
 registerPlatformComponents(Platform.OS);
 
@@ -25,6 +26,9 @@ AppRegistry.registerRunnable('main', ({ rootTag }: { rootTag: number | string })
     tokens: deviceTokens(),
     // Turns a `require('./x.png')` into something native can load. Without it images are blank.
     resolveAssetSource: (value) => Image.resolveAssetSource(value as never),
+
+    ...appConfig,
+
   });
 
   // Re-resolves the conditions when the device rotates or the theme changes. A rotation dirties
