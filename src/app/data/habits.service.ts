@@ -1,4 +1,4 @@
-import { Service, signal } from "@angular/core";
+import { computed, Service, signal } from "@angular/core";
 import { habitsDatabase } from "./habits.database";
 import { Habit } from "../interfaces/habit.interface";
 
@@ -12,12 +12,28 @@ export function isoDate(date: Date): string {
   return `${y}-${m}-${d}`;
 }
 
+/** Adds or removes one date from a set of completions, without touching the set passed in. */
+export function toggleCompletion( days: ReadonlySet<string>, date: string ): ReadonlySet<string> {
+  const next = new Set(days);
+  if ( next.has( date ) ) next.delete(date);
+  else next.add(date);
+  return next;
+}
+
 @Service()
 export class HabitsService {
   readonly palette: readonly string [] = PALETTE;
   private readonly all = signal<readonly Habit[]>([]);
+  private readonly done = signal<ReadonlyMap<string, ReadonlySet<string>>>(new Map());
+
 
   readonly habits = this.all.asReadonly();
+
+  readonly remaining = computed(() => {
+    const habits = this.all();
+    const today = isoDate(new Date());
+    return habits.filter(habit => !this.done().get(habit.id)?.has(today)).length;
+  });
 
   constructor() {
     void this.loadFromDatabase();
@@ -33,6 +49,19 @@ export class HabitsService {
     }>(
       'SELECT * FROM habit ORDER BY created_at;'
     );
+
+    const completions = await db.getAllAsync<{ habit_id: string; date: string }>(
+      'SELECT habit_id, date FROM completion',
+    );
+
+    const grouped = new Map<string, Set<string>>();
+    for (const row of completions) {
+      const set = grouped.get(row.habit_id) ?? new Set<string>();
+      set.add(row.date);
+      grouped.set(row.habit_id, set);
+    }
+
+
     this.all.set(
       rows.map((row) => ({
         id: row.id,
@@ -41,13 +70,22 @@ export class HabitsService {
         createdAt: row.created_at,
       }) as Habit),
     );
+
+    this.done.set( grouped );
+  }
+
+  completions( id:string ): ReadonlySet<string> {
+    return this.done().get(id) ?? new Set();
+  }
+
+  isDone( id: string, date = new Date() ): boolean {
+    return this.completions( id ).has( isoDate( date ) );
   }
 
   create( habit: { name: string, color: string, } ): Habit {
     const created: Habit = {
       id: `h${Date.now().toString(36)}${Math.floor( Math.random() * 1_000).toString(36)}`,
       name: habit.name.trim(),
-      done: false,
       color: habit.color,
       createdAt: isoDate( new Date() ),
     };
@@ -65,6 +103,27 @@ export class HabitsService {
       });
     
     return created;
+  }
+
+  toggleToday( id: string, date = new Date() ): void {
+    const iso = isoDate( date );
+    this.done.update( ( all ) => {
+      const next = new Map(all);
+      next.set( id, toggleCompletion( next.get(id) ?? new Set(), iso ) );
+      return next;
+    });
+    const nowDone = this.isDone(id, date);
+    void habitsDatabase
+      .ready()
+      .then( ( db ) => {
+        nowDone
+          ? db.runAsync(`INSERT OR IGNORE INTO completion ( habit_id, date ) values ( ?, ?)`, id, iso)
+          : db.runAsync(`DELETE FROM completion WHERE habit_id = ? AND DATE = ?`, id, iso)
+      })
+      .catch( ( error ) => {
+        console.log('<--------------- JK Habits.service Error --------------->');
+        console.log(error);
+      });
   }
 
   private persistHabit( db: Awaited<ReturnType<typeof habitsDatabase.ready>>, habit: Habit ) {
