@@ -30,7 +30,9 @@ import { HabitsService } from "../data/habits.service";
          </app-header>
         <scroll-view [contentContainerStyle]="{gap:8}">
           @for (habit of habits(); track habit.id) {
-            <habit-row [name]="habit.name" [done]="habit.done" (toggle)="toggle(habit.id)"/>
+            <view class="list">
+               <habit-row [habit]="habit" [done]="habit.done" (toggle)="toggle(habit.id)"/>
+            </view>
           } @empty {
             <empty-state 
               title="No habits!" 
@@ -62,6 +64,7 @@ export class Home {
    protected readonly remaining = computed(() => this.habits().filter(habit => !habit.done).length);
 
    protected toggle(id: string) {
-
+      console.log('<--------------- JK Home --------------->');
+      console.log(this.habits().filter( h=> h.id === id ));
    }
 }

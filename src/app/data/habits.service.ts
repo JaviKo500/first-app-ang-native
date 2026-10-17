@@ -25,10 +25,22 @@ export class HabitsService {
 
   private async loadFromDatabase(): Promise<void> {
     const db = await habitsDatabase.ready();
-    const rows = await db.getAllAsync<Habit>(
+    const rows = await db.getAllAsync<{
+      id: string;
+      name: string;
+      color: string;
+      created_at: string;
+    }>(
       'SELECT * FROM habit ORDER BY created_at;'
     );
-    this.all.set(rows);
+    this.all.set(
+      rows.map((row) => ({
+        id: row.id,
+        name: row.name,
+        color: row.color,
+        createdAt: row.created_at,
+      }) as Habit),
+    );
   }
 
   create( habit: { name: string, color: string, } ): Habit {
