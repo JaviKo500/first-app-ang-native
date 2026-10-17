@@ -4,10 +4,10 @@ import { lucideHouse, lucideSettings } from '@ng-icons/lucide';
 
 @Component({
    selector: 'app-tabs',
-   imports: [ NativeHeader, NativeTab, NativeTabsOutlet ],
+   imports: [NativeHeader, NativeTab, NativeTabsOutlet,],
    template: `
       <native-header [hidden]="true"/>
-      <native-tabs-outlet>
+      <native-tabs-outlet class="dark:bg-black bg-zinc-100">
          <native-tab path="" title="Home" [icon]="{ svg: house } "  />
          <native-tab path="settings" title="Settings" [icon]="{ svg: settings }"  />
       </native-tabs-outlet>
