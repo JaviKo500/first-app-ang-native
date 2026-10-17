@@ -31,7 +31,7 @@ import { HabitsService } from "../data/habits.service";
         <scroll-view [contentContainerStyle]="{gap:8}">
           @for (habit of habits(); track habit.id) {
             <view class="list">
-               <habit-row [habit]="habit" [done]="isDone(habit.id)" (toggle)="toggle(habit.id)"/>
+               <habit-row [habit]="habit" [done]="isDone(habit.id)" (toggle)="toggle(habit.id)" (remove)="remove(habit.id)" />
             </view>
           } @empty {
             <empty-state 
@@ -69,5 +69,9 @@ export class Home {
 
    protected toggle(id: string) {
       this.habitService.toggleToday( id );
+   }
+
+   protected remove(id: string) {
+      this.habitService.remove( id );
    }
 }

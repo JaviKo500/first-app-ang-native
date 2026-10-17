@@ -33,6 +33,7 @@ import { provideIcons } from "@ng-icons/core";
             accessibilityRole="button" 
             [accessibilityLabel]="habit().name"
             (press)="toggle.emit()"
+            (longPress)="remove.emit()"
          >
             <text class="name" [class]="done() ? 'done' : ''">{{ habit().name }}</text>
             <view class="flex-row justify-between items-center">
@@ -52,4 +53,6 @@ export class HabitRow {
    readonly habit = input.required<Habit>();
    readonly done = input.required<boolean>();
    readonly toggle = output<void>();
+   readonly remove = output<void>();
+
 }

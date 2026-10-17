@@ -126,6 +126,28 @@ export class HabitsService {
       });
   }
 
+  remove(id: string): void {
+    this.all.update( all => all.filter( h  => h.id !== id) );
+    this.done.update( all => {
+      const next = new Map(all);
+      next.delete(id);
+      return next;
+    });
+
+    void habitsDatabase
+      .ready()
+      .then( db => {
+        db.withTransactionAsync( async () => {
+          await db.runAsync(`DELETE FROM habit WHERE id = ?`, id);
+          await db.runAsync(`DELETE FROM completion WHERE habit_id = ?`, id);
+        });
+      })
+      .catch( err => {
+        console.log('<--------------- JK Habits.service Error --------------->');
+        console.log(err);
+      })
+  }
+
   private persistHabit( db: Awaited<ReturnType<typeof habitsDatabase.ready>>, habit: Habit ) {
     return db.runAsync(
       `INSERT INTO habit ( id, name, color, created_at ) VALUES (?,?,?,?)
