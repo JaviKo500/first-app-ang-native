@@ -5,12 +5,11 @@ import { HabitRow } from "../habits/habit-row";
 import { Header } from "../header/header";
 import { NewHabit } from "../habits/new-habit";
 import { EmptyState } from "../shared/empty-state";
-import { Footer } from "../shared/footer";
 import { Habit } from "../interfaces/habit.interface";
 
 @Component({
    selector: 'home-app',
-   imports: [HabitRow, Header, NewHabit, EmptyState, Footer, View, ScrollView,],
+   imports: [HabitRow, Header, NewHabit, EmptyState, View, ScrollView,],
    template: `
       <view class="flex-1 gap-2 bg-zinc-100 px-5 pt-safe dark:bg-black">
         <app-header 
@@ -27,7 +26,6 @@ import { Habit } from "../interfaces/habit.interface";
             />
           }
         </scroll-view>
-        <custom-footer/>
       </view>
    `,
    host: { style: 'flex: 1' },
