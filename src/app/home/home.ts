@@ -66,11 +66,4 @@ export class Home {
          habits.map(habit => habit.id === id ? { ...habit, done: !habit.done } : habit)
       );
    }
-
-   private nextHabitId = 0;
-
-   protected add(name: string) {
-      const id = `habit${++this.nextHabitId}`;
-      this.habits.update((habits) => [...habits, { id, name, done: false }]);
-   }
 }
