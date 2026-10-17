@@ -1,7 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { SafeAreaProvider } from '@ng-native/components';
 import { ThemeService } from './header/theme.service';
-import { Home } from './home/home';
 import { NativeStackOutlet } from '@ng-native/router';
 
 @Component({
