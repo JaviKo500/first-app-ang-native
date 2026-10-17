@@ -22,4 +22,8 @@ export const routes: Routes = [
          },
       ]
    },
+   {
+      path: 'habit/new',
+      loadComponent: () => import('./habits/habit-form').then( (m) => m.HabitForm ),
+   }
 ];

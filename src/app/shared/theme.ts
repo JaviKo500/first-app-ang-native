@@ -1,4 +1,4 @@
-import { Component, inject, input } from "@angular/core";
+import { Component, inject } from "@angular/core";
 import { provideIcons } from '@ng-icons/core';
 import { Pressable, Text } from "@ng-native/components";
 import { NgIcon } from "@ng-native/icons";
