@@ -6,7 +6,6 @@ import { provideIcons } from "@ng-icons/core";
 
 import { HabitRow } from "../habits/habit-row";
 import { Header } from "../header/header";
-import { NewHabit } from "../habits/new-habit";
 import { EmptyState } from "../shared/empty-state";
 import { Habit } from "../interfaces/habit.interface";
 import { NativeNavigation } from "@ng-native/router";
