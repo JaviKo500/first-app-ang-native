@@ -17,7 +17,7 @@ import { Linking } from "react-native";
                (press)="open('https://github.com/JaviKo500')"
                >JaViKo500 - AN</text>
          </text>
-         <text class="text-xs android:text-sm ios:text-sm font-light text-zinc-400"> V 1.0.0 </text>
+         <text class="text-xs android:text-sm ios:text-sm font-light text-zinc-600 dark:text-zinc-400"> V 1.0.0 </text>
       </view>
    `,
 })

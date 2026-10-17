@@ -13,7 +13,7 @@ import { Footer } from "../shared/footer";
             title="Settings"
             subtitle="User preferences"/>
          <text class="text-xl font-medium text-zinc-900 mb-1 android:text-lg android:font-normal dark:text-white">Preferences</text>
-         <view class="rounded-lg border border-gray-200 bg-white p-4 dark:bg-zinc-900">
+         <view class="rounded-lg border border-gray-200 bg-white p-2 dark:bg-zinc-900">
             <view class="divide-y divide-gray-200">
                <theme/>
             </view>

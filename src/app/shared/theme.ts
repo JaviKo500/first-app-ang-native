@@ -12,7 +12,7 @@ import { ThemeService } from "../header/theme.service";
    providers: [provideIcons({ lucideSun, lucideMoon })],
    template: `
       <pressable 
-         class="flex-row items-center justify-between rounded-lg active:bg-zinc-300 py-3" 
+         class="flex-row items-center justify-between rounded-lg active:bg-zinc-300 p-2" 
          (press)="changeTheme()"
       >
          <text class="text-base font-normal text-gray-900 dark:text-gray-300">{{ isDark ? 'Light mode' : 'Dark mode' }}</text>
