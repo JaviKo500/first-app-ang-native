@@ -18,8 +18,8 @@ import { provideIcons } from "@ng-icons/core";
             [accessibilityLabel]="habit().name"
             [accessibilityState]="{checked: done()}"
             [attr.data-done]="done() ? '' : null"
-            [style.border-color]="habit().color"
-            [style.background-color]="done() ? habit().color : 'transparent'"
+            [style.border-color]="habit().color ? habit().color : '#000'"
+            [style.background-color]="done() ? (habit().color || '#000') : 'transparent'"
             (press)="toggle.emit()"
             (longPress)="toggle.emit()"
    
