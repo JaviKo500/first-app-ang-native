@@ -6,12 +6,13 @@ import { Text, View } from "@ng-native/components";
    selector: 'app-header',
    template:`
       <view class="flex-row items-center justify-between pt-4">
-        <text class="text-3xl font-bold text-zinc-900 android:text-2xl android:font-normal dark:text-white">Today</text>
+        <text class="text-3xl font-bold text-zinc-900 android:text-2xl android:font-normal dark:text-white">{{title()}}</text>
       </view>
-      <text class="text-zinc-500 dark:text-zinc-300 ios:text-xs ios:font-semibold ios:uppercase">{{ remaining() }} left to do</text>
+      <text class="text-zinc-500 dark:text-zinc-300 ios:text-xs ios:font-semibold ios:uppercase mb-4">{{ subtitle() }}</text>
    `
 })
 
 export class Header {
-   readonly remaining = input.required<number>();
+   protected readonly title = input.required<string>();
+   protected readonly subtitle = input<string>();
 }

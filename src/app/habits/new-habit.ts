@@ -7,7 +7,7 @@ import { form, FormField, maxLength, required, submit} from '@angular/forms/sign
    imports: [FormField, View, TextInput, Text, Pressable],
    selector: 'new-habit',
    template: `
-      <view class="my-4 flex-row gap-2">
+      <view class="flex-row gap-2">
          <text-input
             class="flex-1 rounded-xl border border-zinc-400 dark:border-zinc-600 focus:border-emerald-600 bg-white px-4 py-3 text-base text-zinc-900 dark:bg-zinc-900 dark:text-white dark:placeholder:text-zinc-400"
             placeholder="New habit"

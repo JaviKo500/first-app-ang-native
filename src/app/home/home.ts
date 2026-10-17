@@ -13,7 +13,9 @@ import { Habit } from "../interfaces/habit.interface";
    imports: [HabitRow, Header, NewHabit, EmptyState, Footer, View, ScrollView,],
    template: `
       <view class="flex-1 gap-2 bg-zinc-100 px-5 pt-safe dark:bg-black">
-        <app-header [remaining]="remaining()"/>
+        <app-header 
+            title="Today"
+            subtitle="{{remaining() }} left to do"/>
         <new-habit (add)="add($event)" />
         <scroll-view [contentContainerStyle]="{gap:8}">
           @for (habit of habits(); track habit.id) {
