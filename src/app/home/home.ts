@@ -9,6 +9,7 @@ import { Header } from "../header/header";
 import { EmptyState } from "../shared/empty-state";
 import { Habit } from "../interfaces/habit.interface";
 import { NativeNavigation } from "@ng-native/router";
+import { HabitsService } from "../data/habits.service";
 
 @Component({
    selector: 'home-app',
@@ -45,7 +46,7 @@ import { NativeNavigation } from "@ng-native/router";
 export class Home {
 
    private readonly navigation = inject(NativeNavigation);
-
+   private readonly habitService = inject(HabitsService);
    protected addHabit(): void {
       void this.navigation.present(['/habit/new'], {
          as: 'formSheet',
@@ -56,13 +57,11 @@ export class Home {
       });
    }
 
-   protected readonly habits = signal<Habit[]>([]);
+   protected readonly habits = this.habitService.habits;
 
    protected readonly remaining = computed(() => this.habits().filter(habit => !habit.done).length);
 
    protected toggle(id: string) {
-      this.habits.update((habits) =>
-         habits.map(habit => habit.id === id ? { ...habit, done: !habit.done } : habit)
-      );
+
    }
 }

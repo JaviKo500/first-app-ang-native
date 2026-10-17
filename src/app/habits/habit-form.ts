@@ -96,6 +96,8 @@ export class HabitForm {
   protected save(): void {
 
     void submit( this.formHabit, async () => {
+      const { color, name } = this.data()
+      this.habitsService.create( { color, name } );
       this.formHabit().reset({
         name: '',
         color: '',
