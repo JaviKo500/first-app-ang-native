@@ -10,6 +10,7 @@ import { EmptyState } from "../shared/empty-state";
 import { Habit } from "../interfaces/habit.interface";
 import { NativeNavigation } from "@ng-native/router";
 import { HabitsService } from "../data/habits.service";
+import { Dialogs } from "@ng-native/device";
 
 @Component({
    selector: 'home-app',
@@ -31,7 +32,7 @@ import { HabitsService } from "../data/habits.service";
         <scroll-view [contentContainerStyle]="{gap:8}">
           @for (habit of habits(); track habit.id) {
             <view class="list">
-               <habit-row [habit]="habit" [done]="isDone(habit.id)" (toggle)="toggle(habit.id)" (remove)="remove(habit.id)" />
+               <habit-row [habit]="habit" [done]="isDone(habit.id)" (toggle)="toggle(habit.id)" (remove)="remove(habit)" />
             </view>
           } @empty {
             <empty-state 
@@ -48,7 +49,9 @@ import { HabitsService } from "../data/habits.service";
 export class Home {
 
    private readonly navigation = inject(NativeNavigation);
+   private readonly dialogs = inject(Dialogs);
    private readonly habitService = inject(HabitsService);
+
    protected addHabit(): void {
       void this.navigation.present(['/habit/new'], {
          as: 'formSheet',
@@ -71,7 +74,14 @@ export class Home {
       this.habitService.toggleToday( id );
    }
 
-   protected remove(id: string) {
-      this.habitService.remove( id );
+   protected async remove(habit: Habit) {
+      const sure = await this.dialogs.confirm( `Delete habit "${habit.name}" `, {
+         message: 'Your habit will be permanently deleted. This cannot be undone.',
+         confirm: 'Delete',
+         cancel: 'Cancel',
+         destructive: true,
+      });
+      if ( !sure ) return;
+      this.habitService.remove( habit.id );
    }
 }
