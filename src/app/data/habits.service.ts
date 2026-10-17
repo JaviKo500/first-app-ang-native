@@ -115,11 +115,11 @@ export class HabitsService {
     const nowDone = this.isDone(id, date);
     void habitsDatabase
       .ready()
-      .then( ( db ) => {
+      .then( ( db ) => 
         nowDone
           ? db.runAsync(`INSERT OR IGNORE INTO completion ( habit_id, date ) values ( ?, ?)`, id, iso)
           : db.runAsync(`DELETE FROM completion WHERE habit_id = ? AND DATE = ?`, id, iso)
-      })
+      )
       .catch( ( error ) => {
         console.log('<--------------- JK Habits.service Error --------------->');
         console.log(error);
@@ -136,15 +136,27 @@ export class HabitsService {
 
     void habitsDatabase
       .ready()
-      .then( db => {
+      .then( db => 
         db.withTransactionAsync( async () => {
           await db.runAsync(`DELETE FROM habit WHERE id = ?`, id);
           await db.runAsync(`DELETE FROM completion WHERE habit_id = ?`, id);
-        });
-      })
+        }))
       .catch( err => {
         console.log('<--------------- JK Habits.service Error --------------->');
         console.log(err);
+      })
+  }
+
+  truncateData(): void {
+    this.all.set( [] );
+    this.done.set( new Map );  
+    void habitsDatabase
+      .ready()
+      .then( db => {
+        db.withTransactionAsync( async () => {
+          await db.runAsync('DELETE FROM completion');
+          await db.runAsync('DELETE FROM habit');
+        });
       })
   }
 
